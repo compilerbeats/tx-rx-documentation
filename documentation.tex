@@ -1,0 +1,171 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[ngerman]{babel}
+
+\title{NVS Programmierprojekt}
+\author{Frauenschuh Florian, Lindner Peter, Weilert Alexander}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Messreihen: Version 1}
+Für die Messung wurde eine Datei mit genau 10MB verwendet, welche mittels ``fsutil file createnew 10MB 10000000`` erstellt wurde. Für die Messungen wurde jeweils die Sende- bzw. Empfangszeit des Initialisierungs- sowie des Finalisierungspakets verwendet. \\
+Die drei Messreihen wurden mit Paketlänge 100, 1400, 60000 Bytes durchgeführt. \\
+Sowohl Receiver als auch Transmitter wurden über localhost ausgeführt.
+
+\subsection{Messreihe 1: 100 Byte}
+Man kann beobachten dass Python $\rightarrow$ Python die kürzeren und Java $\rightarrow$ Java die längeren Übertragungszeiten hat. Generell ist die Differenz zischen den einzelnen Messungen nie größer als 304ms. Außerdem wurden alle Dateien erfolgreich übertragen.
+
+\subsection{Messreihe 2: 1400 Byte}
+Wenn man die Paketlänge erhöht, wird die Übertragungszeit wesentlich kürzer. Die Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ist hier relativ betrachtet größer als in der Messreihe 1. Man kann auch erkennen dass bei zwei Übertragungen die Datei nicht korrekt übertragen wurde. Das könnte daran liegen, dass der Receiver mit den hohen Übertragungsraten Schwierigkeiten haben könnte. Unabhängig von den angegebenen Messreihen, haben wir Tests mit Delay beim Versenden der Pakete durchgeführt und dabei wurden alle Dateien immer korrekt übertragen. Diese Tests wurden hier nicht angegeben, da diese Verzögerung die Messungen verfälschen würden.
+
+\subsection{Messreihe 2: 60000 Byte}
+Hier ist die relative Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ungefähr so groß wie in der zweiten Messreihe. Auch hier ist eine der zehn Übertragungen fehlgeschlagen (vermutlich wegen den selben Gründen wie in der zweiten Messreihe). 
+
+\begin{table}[]
+\caption{Paketlänge: 100}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 945       & 84.66              & J        \\ \cline{2-4} 
+                            & 952       & 84.03              & J        \\ \cline{2-4} 
+                            & 904       & 88.50              & J        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 1081      & 74.00              & J        \\ \cline{2-4} 
+                            & 1055      & 75.83              & J        \\ \hline
+\textbf{Python $\rightarrow$ Java}  & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 1182      & 67.68              & J        \\ \cline{2-4} 
+                            & 1174      & 68.14              & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 1208      & 71.38              & J        \\ \cline{2-4} 
+                            & 1143      & 70.00              & J        \\ \cline{2-4} 
+                            & 1104      & 72.46              & J        \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\caption{Paketlänge: 1400}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 111       & 720.72             & J        \\ \cline{2-4} 
+                            & 99        & 808.08             & J        \\ \cline{2-4} 
+                            & 90        & 888.89             & N        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 159       & 503.14             & J        \\ \cline{2-4} 
+                            & 155       & 516.13             & N        \\ \hline
+\textbf{Python $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 107       & 747.66             & J        \\ \cline{2-4} 
+                            & 119       & 672.27             & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}    & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 188       & 425.53             & J        \\ \cline{2-4} 
+                            & 217       & 368.66             & J        \\ \cline{2-4} 
+                            & 211       & 379.15              & J        \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\caption{Paketlänge: 60000}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 29        & 2758.62            & J        \\ \cline{2-4} 
+                            & 42        & 1904.76            & N        \\ \cline{2-4} 
+                            & 19        & 4210.53            & J        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 84        & 952.38             & J        \\ \cline{2-4} 
+                            & 62        & 1290.32            & J        \\ \hline
+\textbf{Python $\rightarrow$ Java}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 20        & 4000.00            & J        \\ \cline{2-4} 
+                            & 19        & 4210.53            & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}    & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 61        & 1311.48            & J        \\ \cline{2-4} 
+                            & 73        & 1095.89            & J        \\ \cline{2-4} 
+                            & 64        & 1250.00            & J        \\ \hline
+\end{tabular}
+\end{table}
+
+
+
+
+
+\section{Messreihen: Version 2}
+\begin{table}[]
+\caption{Paketlänge: 100}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 10075      & 7.940         & J        \\ \cline{2-4} 
+                            & 10580      & 7.561         & J        \\ \cline{2-4} 
+                            & 10478      & 7.635         & J        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 9836       & 8.133         & J        \\ \cline{2-4} 
+                            & 10120      & 7.905         & J        \\ \cline{2-4} 
+                            & 10072      & 7.943         & J        \\ \hline
+\textbf{Python $\rightarrow$ Java}  & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 10689      & 7.484         & J        \\ \cline{2-4} 
+                            & 10296      & 7.770         & J        \\ \cline{2-4} 
+                            & 10154      & 7.879         & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 8796       & 9.095         & J        \\ \cline{2-4} 
+                            & 9191       & 8.704         & J        \\ \cline{2-4} 
+                            & 9356       & 8.551         & J        \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[]
+\caption{Paketlänge: 1400}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 817      & 97.92          & J        \\ \cline{2-4} 
+                            & 814      & 98.28          & J        \\ \cline{2-4} 
+                            & 808      & 99.01          & J        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 869      & 92.06          & J        \\ \cline{2-4} 
+                            & 895      & 89.39          & J        \\ \cline{2-4} 
+                            & 902      & 88.69          & J        \\ \hline
+\textbf{Python $\rightarrow$ Java}  & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 749      & 106.81         & J        \\ \cline{2-4} 
+                            & 734      & 108.99         & J        \\ \cline{2-4} 
+                            & 775      & 103.23         & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 971      & 82.39          & J        \\ \cline{2-4} 
+                            & 821      & 97.44          & J        \\ \cline{2-4} 
+                            & 814      & 98.28          & J        \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[]
+\caption{Paketlänge: 60000}
+\label{tab:my-table}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 56       & 1428.57         & J        \\ \cline{2-4} 
+                            & 54       & 1481.48         & J        \\ \cline{2-4} 
+                            & 50       & 1600            & J        \\ \hline
+\textbf{Java $\rightarrow$ Python}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 123      & 650.41          & J        \\ \cline{2-4} 
+                            & 122      & 655.74          & J        \\ \cline{2-4} 
+                            & 132      & 606.06          & J        \\ \hline
+\textbf{Python $\rightarrow$ Java}  & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 50       & 1600            & J        \\ \cline{2-4} 
+                            & 51       & 1568.63         & J        \\ \cline{2-4} 
+                            & 56       & 1428.57         & J        \\ \hline
+\textbf{Java $\rightarrow$ Java}   & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
+                            & 125      & 640             & J        \\ \cline{2-4} 
+                            & 134      & 579.01          & J        \\ \cline{2-4} 
+                            & 128      & 625             & J        \\ \hline
+\end{tabular}
+\end{table}
+
+\end{document}
