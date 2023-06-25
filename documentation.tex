@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
 \usepackage[ngerman]{babel}
+\usepackage{csquotes}
 
 \title{NVS Programmierprojekt}
 \author{Frauenschuh Florian, Lindner Peter, Weilert Alexander}
@@ -10,23 +11,32 @@
 
     \maketitle
 
-    \section{Messreihen: Version 1}
-    Für die Messung wurde eine Datei mit genau 10MB verwendet, welche mittels ``fsutil file createnew 10MB 10000000`` erstellt wurde. Für die Messungen wurde jeweils die Sende- bzw. Empfangszeit des Initialisierungs- sowie des Finalisierungspakets verwendet. \\
+    \section{Messreihen: Version 1}\label{sec:messreihen:-version-1}
+    Für die Messung wurde eine Datei mit genau 10MB verwendet, welche mittels \enquote{fsutil file createnew 10MB 10000000} erstellt wurde.
+    Für die Messungen wurde jeweils die Sende- bzw.\ Empfangszeit des Initialisierungs- sowie des Finalisierungspakets verwendet. \\
     Die drei Messreihen wurden mit Paketlänge 100, 1400, 60000 Bytes durchgeführt. \\
     Sowohl Receiver als auch Transmitter wurden über localhost ausgeführt.
 
-    \subsection{Messreihe 1: 100 Byte}
-    Man kann beobachten dass Python $\rightarrow$ Python die kürzeren und Java $\rightarrow$ Java die längeren Übertragungszeiten hat. Generell ist die Differenz zischen den einzelnen Messungen nie größer als 304ms. Außerdem wurden alle Dateien erfolgreich übertragen.
+    \subsection{V1 Messreihe 1: 100 Byte}\label{subsec:messreihe-1:-100-byte}
+    Man kann beobachten dass Python $\rightarrow$ Python die kürzeren und Java $\rightarrow$ Java die längeren Übertragungszeiten hat.
+    Generell ist die Differenz zischen den einzelnen Messungen nie größer als 304ms.
+    Außerdem wurden alle Dateien erfolgreich übertragen.
 
-    \subsection{Messreihe 2: 1400 Byte}
-    Wenn man die Paketlänge erhöht, wird die Übertragungszeit wesentlich kürzer. Die Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ist hier relativ betrachtet größer als in der Messreihe 1. Man kann auch erkennen dass bei zwei Übertragungen die Datei nicht korrekt übertragen wurde. Das könnte daran liegen, dass der Receiver mit den hohen Übertragungsraten Schwierigkeiten haben könnte. Unabhängig von den angegebenen Messreihen, haben wir Tests mit Delay beim Versenden der Pakete durchgeführt und dabei wurden alle Dateien immer korrekt übertragen. Diese Tests wurden hier nicht angegeben, da diese Verzögerung die Messungen verfälschen würden.
+    \subsection{V1 Messreihe 2: 1400 Byte}\label{subsec:messreihe-2:-1400-byte}
+    Wenn man die Paketlänge erhöht, wird die Übertragungszeit wesentlich kürzer.
+    Die Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ist hier relativ betrachtet größer als in der Messreihe 1.
+    Man kann auch erkennen dass bei zwei Übertragungen die Datei nicht korrekt übertragen wurde.
+    Das könnte daran liegen, dass der Receiver mit den hohen Übertragungsraten Schwierigkeiten haben könnte.
+    Unabhängig von den angegebenen Messreihen, haben wir Tests mit Delay beim Versenden der Pakete durchgeführt und dabei wurden alle Dateien immer korrekt übertragen.
+    Diese Tests wurden hier nicht angegeben, da diese Verzögerung die Messungen verfälschen würden.
 
-    \subsection{Messreihe 2: 60000 Byte}
-    Hier ist die relative Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ungefähr so groß wie in der zweiten Messreihe. Auch hier ist eine der zehn Übertragungen fehlgeschlagen (vermutlich wegen den selben Gründen wie in der zweiten Messreihe).
+    \subsection{V1 Messreihe 3: 60000 Byte}\label{subsec:messreihe-2:-60000-byte}
+    Hier ist die relative Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ungefähr so groß wie in der zweiten Messreihe.
+    Auch hier ist eine der zehn Übertragungen fehlgeschlagen (vermutlich wegen den selben Gründen wie in der zweiten Messreihe).
 
     \begin{table}[]
         \caption{Paketlänge: 100}
-        \label{tab:my-table}
+        \label{tab:my-tablev1_100}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -48,7 +58,7 @@
 
     \begin{table}[]
         \caption{Paketlänge: 1400}
-        \label{tab:my-table}
+        \label{tab:my-tablev1_1400}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -70,7 +80,7 @@
 
     \begin{table}[]
         \caption{Paketlänge: 60000}
-        \label{tab:my-table}
+        \label{tab:my-tablev1_60000}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -92,10 +102,10 @@
 
     \pagebreak
 
-    \section{Messreihen: Version 2}
+    \section{Messreihen: Version 2}\label{sec:messreihen:-version-2}
     \begin{table}[]
         \caption{Paketlänge: 100}
-        \label{tab:my-table}
+        \label{tab:my-tablev2_100}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -119,7 +129,7 @@
 
     \begin{table}[]
         \caption{Paketlänge: 1400}
-        \label{tab:my-table}
+        \label{tab:my-tablev2_1400}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -144,7 +154,7 @@
 
     \begin{table}[]
         \caption{Paketlänge: 60000}
-        \label{tab:my-table}
+        \label{tab:my-tablev2_60000}
         \begin{tabular}{|l|l|l|l|}
             \hline
             \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Korrekt?} \\ \hline
@@ -164,6 +174,92 @@
             & 134      & 579.01          & J        \\ \cline{2-4}
             & 128      & 625.00          & J        \\ \hline
         \end{tabular}
+    \end{table}
+
+    \newpage
+
+    \section{Messreihen: Version 3}\label{sec:messreihen:-version-3}
+    \subsection{V3 Messreihe 1: 100 Byte}\label{subsec:messreihe-v3-1-100-byte}
+    \subsection{V3 Messreihe 2: 1400 Byte}\label{subsec:messreihe-v3-2:-1400-byte}
+    \subsection{V3 Messreihe 3: 60000 Byte}\label{subsec:messreihe-v3-3:-60000-byte}
+
+    \begin{table}
+        \caption{Paketlänge: 100}
+        \label{tab:my-tablev3_100}
+        \makebox[\textwidth]{
+            \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 10006       & 8.00          & 0       & J         \\ \cline{2-4}
+                & 10312       & 7.76          & 0       & J         \\ \cline{2-4}
+                & 10069       & 7.95          & 0       & J         \\ \hline
+                \textbf{Java $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 220401      & 0.36          & 0       & J          \\ \cline{2-4}
+                & 218462      & 0.37          & 0       & J          \\ \cline{2-4}
+                & 218761      & 0.37          & 0       & J          \\ \hline
+                \textbf{Python $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 10177      & 7.86          & 0       & J         \\ \cline{2-4}
+                & 10164      & 7.87          & 0       & J         \\ \cline{2-4}
+                & 10084      & 7.93          & 0       & J         \\ \hline
+                \textbf{Java $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 33607      & 2.38          & 0       & J         \\ \cline{2-4}
+                & 33592      & 2.38          & 0       & J         \\ \cline{2-4}
+                & 33645      & 2.38          & 0       & J         \\ \hline
+            \end{tabular}
+        }
+    \end{table}
+
+    \begin{table}[]
+        \caption{Paketlänge: 1400}
+        \label{tab:my-tablev3_1400}
+        \makebox[\textwidth]{
+            \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 1052      & 76.05          & 0        & J         \\ \cline{2-4}
+                & 1066      & 75.06          & 0        & J         \\ \cline{2-4}
+                & 1099      & 72.79          & 0        & J         \\ \hline
+                \textbf{Java $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 15572     & 5.14           & 0        & J         \\ \cline{2-4}
+                & 14916     & 5.36           & 0        & J         \\ \cline{2-4}
+                & 14861     & 5.38           & 0        & J         \\ \hline
+                \textbf{Python $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 880       & 90.01          & 0        & J         \\ \cline{2-4}
+                & 930       & 85.74          & 0        & J         \\ \cline{2-4}
+                & 872       & 91.74          & 0        & J         \\ \hline
+                \textbf{Java $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 2398      & 33.49          & 2        & J         \\ \cline{2-4}
+                & 2291      & 34.92          & 0        & J         \\ \cline{2-4}
+                & 2419      & 33.07          & 3        & J         \\ \hline
+            \end{tabular}
+        }
+    \end{table}
+
+
+    \begin{table}[]
+        \caption{Paketlänge: 60000}
+        \label{tab:my-tablev3_60000}
+        \makebox[\textwidth]{
+            \begin{tabular}{|l|l|l|l|l|}
+                \hline
+                \textbf{Python $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 267      & 299.63          & 0        & J        \\ \cline{2-4}
+                & 281      & 284.70          & 0        & J        \\ \cline{2-4}
+                & 269      & 294.40          & 0        & J        \\ \hline
+                \textbf{Java $\rightarrow$ Python} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 5452      & 14.67          & 21       & J        \\ \cline{2-4}
+                & 5225      & 15.31          & 20       & J        \\ \cline{2-4}
+                & 4757      & 16.82          & 18       & J        \\ \hline
+                \textbf{Python $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 212      & 377.36          & 3        & J        \\ \cline{2-4}
+                & 219      & 365.30          & 3        & J        \\ \cline{2-4}
+                & 172      & 465.12          & 2        & J        \\ \hline
+                \textbf{Java $\rightarrow$ Java} & \textbf{Zeit (ms)} & \textbf{Datenrate (Mbit/s)} & \textbf{Retransmitted Pakete} & \textbf{Korrekt?} \\ \hline
+                & 921       & 86.86          & 24       & J        \\ \cline{2-4}
+                & 1094      & 76.26          & 29       & J        \\ \cline{2-4}
+                & 613       & 130.51         & 15       & J        \\ \hline
+            \end{tabular}
+        }
     \end{table}
 
 \end{document}
