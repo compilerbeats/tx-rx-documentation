@@ -2,6 +2,8 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage[ngerman]{babel}
 \usepackage{csquotes}
+\usepackage{listings}
+
 
 \title{NVS Programmierprojekt}
 \author{Frauenschuh Florian, Lindner Peter, Weilert Alexander}
@@ -17,12 +19,23 @@
     Die drei Messreihen wurden mit Paketlänge 100, 1400, 60000 Bytes durchgeführt. \\
     Sowohl Receiver als auch Transmitter wurden über localhost ausgeführt.
 
-    \subsection{V1 Messreihe 1: 100 Byte}\label{subsec:messreihe-1:-100-byte}
+    Der Transmitter wurde in Java beziehungsweise Python über
+    \begin{lstlisting}
+java edu.plus.cs.Main 0 1 127.0.0.1 9999 ../../../file1 <packet-length>
+py .\main.py 0 1 127.0.0.1 9999 .\file1 <packet-length>
+    \end{lstlisting}und der Receiver jeweils über
+    \begin{lstlisting}
+java edu.plus.cs.Main 0 1 9999 ./
+py .\main.py 0 1 9999 ./
+    \end{lstlisting}
+    gestartet.
+
+    \subsection{Messreihe 1: 100 Byte}\label{subsec:messreihe-1:-100-byte}
     Man kann beobachten dass Python $\rightarrow$ Python die kürzeren und Java $\rightarrow$ Java die längeren Übertragungszeiten hat.
     Generell ist die Differenz zischen den einzelnen Messungen nie größer als 304ms.
     Außerdem wurden alle Dateien erfolgreich übertragen.
 
-    \subsection{V1 Messreihe 2: 1400 Byte}\label{subsec:messreihe-2:-1400-byte}
+    \subsection{Messreihe 2: 1400 Byte}\label{subsec:messreihe-2:-1400-byte}
     Wenn man die Paketlänge erhöht, wird die Übertragungszeit wesentlich kürzer.
     Die Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ist hier relativ betrachtet größer als in der Messreihe 1.
     Man kann auch erkennen dass bei zwei Übertragungen die Datei nicht korrekt übertragen wurde.
@@ -30,7 +43,7 @@
     Unabhängig von den angegebenen Messreihen, haben wir Tests mit Delay beim Versenden der Pakete durchgeführt und dabei wurden alle Dateien immer korrekt übertragen.
     Diese Tests wurden hier nicht angegeben, da diese Verzögerung die Messungen verfälschen würden.
 
-    \subsection{V1 Messreihe 3: 60000 Byte}\label{subsec:messreihe-2:-60000-byte}
+    \subsection{Messreihe 3: 60000 Byte}\label{subsec:messreihe-2:-60000-byte}
     Hier ist die relative Differenz zwischen Python $\rightarrow$ Python und Java $\rightarrow$ Java ungefähr so groß wie in der zweiten Messreihe.
     Auch hier ist eine der zehn Übertragungen fehlgeschlagen (vermutlich wegen den selben Gründen wie in der zweiten Messreihe).
 
@@ -102,7 +115,42 @@
 
     \pagebreak
 
-    \section{Messreihen: Version 2}\label{sec:messreihen:-version-2}
+    \section{Messreihen: Version 2}
+    Die zweite Messreihe wurde analog zur ersten Messreihe aufgenommen.\\
+
+    Wobei der Transmitter jeweils in Java beziehungsweise Python über
+    \begin{lstlisting}
+java edu.plus.cs.Main 1 1 127.0.0.1 9999 ../../../file1 <packet-length> 9998
+py .\main.py 1 1 127.0.0.1 9999 .\file1 <packet-length> 9998
+    \end{lstlisting}und der Receiver jeweils über
+    \begin{lstlisting}
+java edu.plus.cs.Main 1 1 9999 ./ 127.0.0.1 9998
+py .\main.py 1 1 9999 ./ 127.0.0.1 9998
+    \end{lstlisting}
+    gestartet wurde.
+
+    \subsection{Messreihe 1: 100 Byte}
+    In den Messdaten ist ersichtlich, dass in dieser Version mit 100 Byte großen Paketen fast alle Kombinationen in etwa
+    gleich hohe Übertragungsraten erreichen, wobei Java $\rightarrow$ Java die höchste Übertragungsrate erreicht.
+    In keiner der aufgezeichneten Messungen ist ein Paketverlust aufgetreten.
+    Allgemein fällt natürlich auf, dass die Übertragungsrate durch die Acknowledgements rapide gesunken ist.
+
+    \subsection{Messreihe 2: 1400 Byte}
+    Auch in dieser Messreihe sind fast alle Kombinationen in etwa gleich schnell, wobei diesmal die Kombination
+    Python $\rightarrow$ Java die höchste Übertragungsrate erreicht.
+    In keiner der aufgezeichneten Messungen ist ein Paketverlust aufgetreten.
+    Analog zu der Messreihe mit 100 Byte großen Paketen ist auch hier die Übertragungsrate im Vergleich zur
+    NO_ACK Variante stark gesunken.
+
+    \subsection{Messreihe 3: 60000 Byte}
+    Die Messreihe mit 60000 Byte großen Paketen jedoch weißt eine große Varianz bezüglich der Übertragungsraten auf.
+    Es kann beobachtet werden, dass die Kombinationen in denen der Java Transmitter involviert war die geringsten
+    Übertragungsraten erreicht.
+    In keiner der aufgezeichneten Messungen ist ein Paketverlust aufgetreten.
+    Die Differenz der Übertragungsraten zur NO_ACK Variante sind nun nicht mehr so ausgeprägt, was auch zu erwarten war,
+    da durch die große Paketgröße nicht mehr allzu viele Pakete mit einem Acknowledgement bestätigt werden müssen.
+
+
     \begin{table}[]
         \caption{Paketlänge: 100}
         \label{tab:my-tablev2_100}
@@ -178,10 +226,28 @@
 
     \newpage
 
-    \section{Messreihen: Version 3}\label{sec:messreihen:-version-3}
-    \subsection{V3 Messreihe 1: 100 Byte}\label{subsec:messreihe-v3-1-100-byte}
-    \subsection{V3 Messreihe 2: 1400 Byte}\label{subsec:messreihe-v3-2:-1400-byte}
-    \subsection{V3 Messreihe 3: 60000 Byte}\label{subsec:messreihe-v3-3:-60000-byte}
+    \section{Messreihen: Version 3}
+    Die dritte und somit letzte Messreihe wurde wieder analog zu den beiden vorhergehenden Messreihen aufgenommen.\\
+
+    Der Transmitter wurde beispielsweise in Java beziehungsweise Python über
+    \begin{lstlisting}
+java edu.plus.cs.Main 2 1 127.0.0.1 9999 ../../../file1 <packet-length> 9998 100
+py .\main.py 2 1 127.0.0.1 9999 .\file1 <packet-length> 9998 100
+    \end{lstlisting}und der Receiver jeweils über
+    \begin{lstlisting}
+java edu.plus.cs.Main 2 1 9999 ./ 127.0.0.1 9998 100 20 2
+py .\main.py 2 1 9999 ./ 127.0.0.1 9998 100 20 2
+    \end{lstlisting}
+    gestartet wurde.
+
+    \subsection{Messreihe 1: 100 Byte}
+
+
+    \subsection{Messreihe 2: 1400 Byte}
+
+
+    \subsection{Messreihe 3: 60000 Byte}
+
 
     \begin{table}
         \caption{Paketlänge: 100}
