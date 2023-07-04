@@ -18,15 +18,13 @@
     Für die Messungen wurde jeweils die Sende- bzw.\ Empfangszeit des Initialisierungs- sowie des Finalisierungspakets verwendet. \\
     Die drei Messreihen wurden mit Paketlänge 100, 1400, 60000 Bytes durchgeführt. \\
     Sowohl Receiver als auch Transmitter wurden über localhost ausgeführt.\\
-
     Im Weiteren werden wir für diese und auch die darauf folgenden Versionen die wichtigsten Ideen der Implementierung
     erläutern.
     Dabei werden lediglich kurze Code-Snippets der Java Implementierung dargestellt, da die Python Varianten diesen
-    Code ident abbilden.
+    Code identisch abbilden.
 
     \subsubsection*{Implementierung des Transmitters}
-    Der Transmitter bietet die Funktionalität um Init-, Daten und auch Finalize-Pakete zu versenden.\\
-
+    Der Transmitter bietet die Funktionalität um Init-, Daten und auch Finalize-Pakete zu versenden.
     \begin{lstlisting}[language=Java]
 ...
 private void sendPacket(Packet packet) throws IOException {
@@ -39,11 +37,9 @@ private void sendPacket(Packet packet) throws IOException {
     socket.send(udpPacket);
 }
 ...
-    \end{lstlisting}
-
-    Dabei wird der Payload dieser Pakete in \enquote{Chunks} aus dem jeweiligen File ausgelesen, der MD-5 Hash berechnet
-    , in ein Datenpaket verpackt und zum Receiver gesendet
-
+    \end{lstlisting} \\
+    Dabei wird der Payload dieser Pakete in \enquote{Chunks} aus dem jeweiligen File ausgelesen, der MD-5 Hash berechnet,
+    in ein Datenpaket verpackt und zum Receiver gesendet. \\
     \begin{lstlisting}[language=Java]
 ...
 try (FileInputStream input =
@@ -62,18 +58,15 @@ try (FileInputStream input =
     \end{lstlisting}
 
     \subsubsection*{Implementierung des Receivers}
-    Im Receiver wird nun auf einen bestimmten Port gehorcht
-
+    Im Receiver wird nun auf einen bestimmten Port gehorcht.
     \begin{lstlisting}[language=Java]
 ...
 DatagramPacket udpPacket = new DatagramPacket(buffer, buffer.length);
 ...
 socket.receive(udpPacket);
 ...
-    \end{lstlisting}
-
-    Dabei ist wichtig, dass das ankommende Paket richtig geparsed wird
-
+    \end{lstlisting} \\
+    Dabei ist wichtig, dass das ankommende Paket richtig geparsed wird.
     \begin{lstlisting}[language=Java]
 ...
 if (PacketInterpreter.isInitializationPacket(udpPacket)) {
@@ -92,28 +85,24 @@ if (PacketInterpreter.isInitializationPacket(udpPacket)) {
     }
 }
 ...
-    \end{lstlisting}
-
+    \end{lstlisting} \\
     Über die \enquote{PacketDigest} Klasse wird dann abschließend die Datei geschrieben und der im Finalize-Paket
-    übermittelte MD-5 Hash auf Korrektheit geprüft.\\
-
+    übermittelte MD-5 Hash auf Korrektheit geprüft.\\ \\
     Die Usage über die Commandline sieht dabei wie folgt aus
     \begin{lstlisting}
 TX: <operatingMode> <transmissionId> <ip> <port> <fileName>
 <packetSize>
 RX: <operatingMode> <transmissionId> <port> <targetFolder>
-    \end{lstlisting}
-
+    \end{lstlisting} \\
     Der Transmitter wurde in Java beziehungsweise Python über
     \begin{lstlisting}
 java edu.plus.cs.Main 0 1 127.0.0.1 9999 file1 <p-length>
 py .\main.py 0 1 127.0.0.1 9999 .\file1 <p-length>
-    \end{lstlisting}und der Receiver jeweils über
+    \end{lstlisting} und der Receiver jeweils über \\
     \begin{lstlisting}
 java edu.plus.cs.Main 0 1 9999 ./
 py .\main.py 0 1 9999 ./
-    \end{lstlisting}
-    gestartet.
+    \end{lstlisting} gestartet.
 
     \subsection{Messreihe 1: 100 Byte}\label{subsec:messreihe-1:-100-byte}
     Man kann beobachten dass Python $\rightarrow$ Python die kürzeren und Java $\rightarrow$ Java die längeren Übertragungszeiten hat.
@@ -200,12 +189,12 @@ py .\main.py 0 1 9999 ./
 
     \pagebreak
 
-    \section{Messreihen: Version 2 - Stop & Wait}
+    \section{Messreihen: Version 2 - Stop \& Wait}
     Die zweite Messreihe wurde analog zur ersten Messreihe aufgenommen.\\
 
     \subsubsection*{Implementierung des Transmitters}
     Bei dem Transmitter musste nun durch den neuen Operating-Mode auf ein Acknowledgement nach jedem gesendeten
-    Paket gewartet werden.\\
+    Paket gewartet werden.
     \begin{lstlisting}[language=Java]
 ...
 // only check for acknowledgement if the operating mode requires to
@@ -217,8 +206,7 @@ if (operatingMode == OperatingMode.STOP_WAIT
     \end{lstlisting}
 
     \subsubsection*{Implementierung des Receivers}
-    Weiters muss nun im Receiver eine Sende-Funktionalität implementiert werden
-
+    Weiters muss nun im Receiver eine Sende-Funktionalität implementiert werden.
     \begin{lstlisting}[language=Java]
 ...
 private void sendAcknowledgementPacket(short transmissionId,
@@ -233,10 +221,8 @@ private void sendAcknowledgementPacket(short transmissionId,
     this.socket.send(udpPacket);
 }
 ...
-    \end{lstlisting}
-
+    \end{lstlisting} \\
     Nach dem Erhalt des Acknowledgements kann der Transmitter somit das nächste Paket übertragen.\\
-
     Die Usage über die Commandline sieht dabei wie folgt aus
     \begin{lstlisting}
 TX: <operatingMode> <transmissionId> <ip> <port> <fileName>
@@ -244,7 +230,6 @@ TX: <operatingMode> <transmissionId> <ip> <port> <fileName>
 RX: <operatingMode> <transmissionId> <ip> <port> <fileName>
 <packetSize> <ackPort>
     \end{lstlisting}
-
     Dabei wurde der Transmitter jeweils in Java beziehungsweise Python über
     \begin{lstlisting}
 java edu.plus.cs.Main 1 1 127.0.0.1 9999 file1 <p-length> 9998
@@ -352,8 +337,7 @@ py .\main.py 1 1 9999 ./ 127.0.0.1 9998
 
     \subsubsection*{Implementierung des Transmitters}
     Bei dem Transmitter war es nun notwendig, über den neuen Operating-Mode auf ein cumulative Acknowledgement oder auf
-    eines oder mehrere duplicate Acknowledgments nach Übertragung eines Windows zu achten.\\
-
+    eines oder mehrere duplicate Acknowledgments nach Übertragung eines Windows zu achten.
     Somit wurde nach jeder Übertragung eines Pakets auf solche geprüft, wenn ein Window komplett übertragen wurde
     \begin{lstlisting}[language=Java]
 ...
@@ -367,7 +351,7 @@ if (operatingMode == OperatingMode.SLIDING_WINDOW
 
     \subsubsection*{Implementierung des Receivers}
     Die Erweiterung des Receivers war jedoch etwas aufwendiger.
-    Hierbei musste der Socket über ein Timeout erweitert werden, welches erreicht wurde, sobald der Transmitter
+    Hierbei musste der Socket über ein Timeout erweitert werden, welcher erreicht wird, sobald der Transmitter
     mit der Übertragung eines Windows fertig geworden ist und somit keine neuen Pakete mehr am Receiver ankommen.
 
     \begin{lstlisting}[language=Java]
@@ -395,11 +379,9 @@ try {
 }
 ...
     \end{lstlisting}
-
-    Dadurch weiß der Receiver nun, ob er das Window vollständig erhalten hat.
+    Dadurch weiß der Receiver nun, dass er das Window vollständig erhalten hat.
     Sollten Pakete dieses Windows fehlen, dann werden diese über ein duplicate Acknowledgement angezeigt und
-    vom Transmitter angefordert.\\
-
+    vom Transmitter angefordert.\\ \\
     Die Usage über die Commandline sieht dabei wie folgt aus
     \begin{lstlisting}[language=Bash]
 TX: <operatingMode> <transmissionId> <ip> <port> <fileName>
@@ -407,7 +389,6 @@ TX: <operatingMode> <transmissionId> <ip> <port> <fileName>
 RX: <operatingMode> <transmissionId> <port> <targetFolder> <ackIp>
 <ackPort> <windowSize> <windowTimeout> <dupAckDelay>
     \end{lstlisting}
-
     Der Transmitter wurde beispielsweise in Java beziehungsweise Python über
     \begin{lstlisting}
 java edu.plus.cs.Main 2 1 127.0.0.1 9999 file1 <p-length> 9998 100
@@ -417,8 +398,7 @@ py .\main.py 2 1 127.0.0.1 9999 .\file1 <p-length> 9998 100
 java edu.plus.cs.Main 2 1 9999 ./ 127.0.0.1 9998 100 5 2
 py .\main.py 2 1 9999 ./ 127.0.0.1 9998 100 5 2
     \end{lstlisting}
-    gestartet wurde.\\
-
+    gestartet.\\ \\
     Besonders wichtig hierbei sind das Window Delay mit je 5ms und die Window Size mit 100.
 
     \subsection{Messreihe 1: 100 Byte}
@@ -428,7 +408,7 @@ py .\main.py 2 1 9999 ./ 127.0.0.1 9998 100 5 2
     Hierbei ist auch zu beachten, dass bei einer solchen Paketgröße und der übertragenen Datei über 1000 Windows
     übertragen werden, und diese somit mit einem Window-Delay von 5ms alleine schon 5 Sekunden der Übertragungszeit
     einnehmen.
-    Ergo ist die Übertragung selbst somit um einiges schneller wie in der Stop & Wait Version der Implementierung.
+    Ergo ist die Übertragung selbst somit um einiges schneller wie in der Stop \& Wait Version der Implementierung.
     In keiner der aufgezeichneten Messungen ist ein Paketverlust aufgetreten.
 
     \begin{table}
@@ -459,11 +439,11 @@ py .\main.py 2 1 9999 ./ 127.0.0.1 9998 100 5 2
     Bei dieser Messreihe ist auffällig, dass die Messungen mit dem Java Receiver bereits langsamer sind.
     Zusätzlich treten bei der Java $\rightarrow$ Java Variante auch Paketverluste auf, die jedoch logischerweise
     dem Protokoll zufolge nachgeladen werden.
-    Die Übertragungsraten der Python Varianten sind vergleichbar mit denen der Stop & Wait Versio, dabei muss wieder
+    Die Übertragungsraten der Python Varianten sind vergleichbar mit denen der Stop \& Wait Versio, dabei muss wieder
     in Betracht gezogen werden, dass bei einer Window Size von 100 und einer Paketgröße von 1400 Byte über
     70 Windows übertragen werden, sich also das Window Delay dementsprechend aufsummiert.
     Ergo kann wieder festgehalten werden, dass die Übertragungsrate ohne diesem Delay somit um einiges höher ist
-    wie bei der Stop & Wait Version.
+    wie bei der Stop \& Wait Version.
 
     \begin{table}[]
         \caption{Paketlänge: 1400}
@@ -494,7 +474,7 @@ py .\main.py 2 1 9999 ./ 127.0.0.1 9998 100 5 2
     langsamen Übertragungsrate führten, da unter Anderem einige Pakete verloren gegangen sind und somit
     nachgeladen werden mussten.
     Interessanterweise liefern die Python Implementierungen unter Einbeziehung des Window Delay eine ähnliche
-    Übertragungsrate wie in der Stop & Wait Version, eine Annäherung war aber aufgrund der sinkenden Paketanzahl zu
+    Übertragungsrate wie in der Stop \& Wait Version, eine Annäherung war aber aufgrund der sinkenden Paketanzahl zu
     erwarten.
 
     \begin{table}[]
